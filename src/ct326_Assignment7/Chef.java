@@ -10,6 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Chef extends Thread{
 	private ReentrantLock re;
 	private String threadName;
+	private int pizzaCount = 0, burgerCount = 0, fishCount = 0;
 
 	Chef(ReentrantLock re, String threadName) {
 		this.re = re;
@@ -22,26 +23,22 @@ public class Chef extends Thread{
 			boolean ans = re.tryLock();
 			if(ans) {
 				try {
-//
-					System.out.println("Chef " + threadName + " is preparing " + Restaurant.orderQueue.peek());
+					System.out.println("Chef " + threadName +
+							" is preparing " + Restaurant.orderQueue.peek());
+					ordersPrepared(Restaurant.orderQueue.peek());
 					Restaurant.serverQueue.add(Restaurant.orderQueue.remove());
-					Thread.sleep((long) (1500*Math.random()));
-//					System.out.println("A Lock Hold Count - " + re.getHoldCount());
+					Thread.sleep((long) (1625*Math.random()));
 				} catch(InterruptedException e) {
 						e.printStackTrace();
 				} finally {
-					System.out.println("Chef " + threadName +
-							" finished making order");
+//					System.out.println("Chef " + threadName +
+//							" finished making order");
 					re.unlock();
-//					System.out.println(" B Lock Hold Count - " +
-//							re.getHoldCount());
 				}
 			}
 			else {
-//				System.out.println("Chef - " + threadName +
-//						" waiting for order");
 				try {
-					Thread.sleep((long) (10*Math.random()));
+					Thread.sleep((long) (11*Math.random()));
 				}
 				catch(InterruptedException e) {
 					e.printStackTrace();
@@ -49,9 +46,29 @@ public class Chef extends Thread{
 			}
 		}
 		Server.finished = true;
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println(this.getOrdersPrepared());
 	}
 
-	public void ordersPrepared(String order) {
-		String 
+	private void ordersPrepared(String order) {
+		order = order.toLowerCase();
+		if(order.contains("pizza")){
+			pizzaCount++;
+		} else if (order.contains("fish n chips")){
+			fishCount++;
+		} else if(order.contains("cheese burger")) {
+			burgerCount++;
+		} else {
+			System.out.println("Unrecognised order");
+		}
+	}
+
+	private String getOrdersPrepared() {
+		return "Chef " + threadName + " prepared - " + pizzaCount + " Neapolitan Pizzas "
+				+ burgerCount + " Cheese Burgers " + fishCount + " Fish N Chips";
 	}
 }
