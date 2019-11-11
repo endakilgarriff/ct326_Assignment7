@@ -29,7 +29,7 @@ public class Server extends Thread {
 					String currentOrder = Restaurant.serverQueue.remove();
 					System.out.println("Server " + threadName + " is serving " + currentOrder);
 					ordersServed(currentOrder);
-					Thread.sleep((long) (1235*Math.random()));
+					Thread.sleep((long) (169*Math.random()));
 //				System.out.println("Lock Hold Count - " + re.getHoldCount());
 				}
 				catch(InterruptedException e) {

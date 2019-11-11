@@ -27,7 +27,7 @@ public class Chef extends Thread{
 							" is preparing " + Restaurant.orderQueue.peek());
 					ordersPrepared(Restaurant.orderQueue.peek());
 					Restaurant.serverQueue.add(Restaurant.orderQueue.remove());
-					Thread.sleep((long) (1625*Math.random()));
+					Thread.sleep((long) (162*Math.random()));
 				} catch(InterruptedException e) {
 						e.printStackTrace();
 				} finally {
