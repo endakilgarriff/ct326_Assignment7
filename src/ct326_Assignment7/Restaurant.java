@@ -9,8 +9,6 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Restaurant {
@@ -31,11 +29,7 @@ public class Restaurant {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        System.out.println("*******Printing orderList*******");
-        // Adding orders to queue
-        for (String i : orderQueue) {
-            System.out.println(i);
-        }
+
         ReentrantLock order = new ReentrantLock();
         ReentrantLock server = new ReentrantLock();
 
@@ -48,30 +42,17 @@ public class Restaurant {
 
         System.out.println("*******Chefs stating to prepare orders*******");
 
-//        john.start();
-//        mark.start();
-//
-//        emily.start();
-//        andrew.start();
-//        katie.start();
+        john.start();
+        mark.start();
+
+        System.out.println("*******Servers stating to serve orders*******");
+
+        emily.start();
+        andrew.start();
+        katie.start();
 
 
-        ExecutorService chefs = Executors.newFixedThreadPool(2);
-        ExecutorService servers = Executors.newFixedThreadPool(3);
-        chefs.execute(mark);
-        chefs.execute(john);
-        servers.execute(katie);
-        servers.execute(emily);
-        servers.execute(andrew);
-        chefs.shutdown();
-        servers.shutdown();
-
-
-//        System.out.println("*******Printing serverQueue*******");
-//
-//
-//        for(String i: serverQueue) {
-//            System.out.println(i);
-//        }
     }
+
+
 }

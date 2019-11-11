@@ -13,6 +13,7 @@ public class Server extends Thread {
 	private ReentrantLock re;
 	private String threadName;
 	static boolean finished = false;
+	private int pizzaCount = 0, burgerCount = 0, fishCount = 0;
 
 	Server(ReentrantLock re, String threadName) {
 		this.re = re;
@@ -21,22 +22,15 @@ public class Server extends Thread {
 
 	@Override
 	public void run() {
-//		while(Restaurant.serverQueue.isEmpty()){
-//			System.out.println("Waiting for orders to be ready to serve");
-//			try {
-//				Thread.sleep(1000);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//		}
 		while (!finished || !Restaurant.serverQueue.isEmpty()) {
 			if (!Restaurant.serverQueue.isEmpty()) {
 				re.lock();
 				try {
-					System.out.println("Server " + threadName + " is serving " + Restaurant.serverQueue.remove());
-//					re.lock();
-					Thread.sleep((long) (1500*Math.random()));
-				System.out.println("Lock Hold Count - " + re.getHoldCount());
+					String currentOrder = Restaurant.serverQueue.remove();
+					System.out.println("Server " + threadName + " is serving " + currentOrder);
+					ordersServed(currentOrder);
+					Thread.sleep((long) (1235*Math.random()));
+//				System.out.println("Lock Hold Count - " + re.getHoldCount());
 				}
 				catch(InterruptedException e) {
 					e.printStackTrace();
@@ -45,20 +39,39 @@ public class Server extends Thread {
 					System.out.println("No orders to serve");
 				}
 				finally {
-					System.out.println("Server " + threadName +
-							" served order");
+//					System.out.println("Server " + threadName +
+//							" served order");
 					re.unlock();
 //				System.out.println("Lock Hold Count - " +
 //						re.getHoldCount());
 				}
 			} else {
 				try {
-					Thread.sleep((long) (10*Math.random()));
+					Thread.sleep((long) (13*Math.random()));
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
 		}
+		System.out.println(this.getOrdersServed());
+	}
+
+	private void ordersServed(String order) {
+		order = order.toLowerCase();
+		if(order.contains("pizza")){
+			pizzaCount++;
+		} else if (order.contains("fish n chips")){
+			fishCount++;
+		} else if(order.contains("cheese burger")) {
+			burgerCount++;
+		} else {
+			System.out.println("Unrecognised order");
+		}
+	}
+
+	private String getOrdersServed() {
+		return "Server " + threadName + " prepared - " + pizzaCount + " Neapolitan Pizzas "
+				+ burgerCount + " Cheese Burgers " + fishCount + " Fish N Chips";
 	}
 }
 
