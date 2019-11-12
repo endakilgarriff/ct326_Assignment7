@@ -13,13 +13,11 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Restaurant {
-
+    
     private static ArrayBlockingQueue<String> orderQueue = new ArrayBlockingQueue<>(100, true);
     private static ArrayBlockingQueue<String> serverQueue = new ArrayBlockingQueue<>(100, true);
 
     public static void main(String[] args) {
-
-
 
         File file = new File("orderList");
         try {
