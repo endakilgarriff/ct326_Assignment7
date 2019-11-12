@@ -15,16 +15,20 @@ public class Chef extends Thread {
     private int pizzaCount = 0, burgerCount = 0, fishCount = 0;
     Condition isEmpty;
 
-    Chef(ReentrantLock chefLock, ReentrantLock serverLock, String threadName, Condition isEmpty) {
+    Chef(ReentrantLock chefLock, ReentrantLock serverLock, String threadName) {
         this.chefLock = chefLock;
         this.threadName = threadName;
-        this.isEmpty = isEmpty;
         this.serverLock = serverLock;
     }
 
     @Override
     public void run() {
         while (!Restaurant.orderQueue.isEmpty()) {
+            try {
+                sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             if (chefLock.tryLock()) {
                 try {
                     String currentOrder = Restaurant.orderQueue.take();
@@ -32,8 +36,7 @@ public class Chef extends Thread {
                             " is preparing " + currentOrder);
                     ordersPrepared(currentOrder);
                     Restaurant.serverQueue.add(currentOrder);
-                    sleep((long) (100 * Math.random()));
-                    isEmpty.signalAll();
+                    sleep((long) (150 * Math.random()));
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();

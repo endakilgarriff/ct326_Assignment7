@@ -15,25 +15,22 @@ public class Server extends Thread {
     private String threadName;
     static boolean finished = false;
     private int pizzaCount = 0, burgerCount = 0, fishCount = 0;
-    Condition isEmpty;
 
-    Server(ReentrantLock re, String threadName, Condition isEmpty) {
+    Server(ReentrantLock re, String threadName) {
         this.re = re;
         this.threadName = threadName;
-        this.isEmpty = isEmpty;
     }
 
     @Override
     public void run() {
-        synchronized (isEmpty) {
             while (!finished) {
                 if (!Restaurant.serverQueue.isEmpty() && re.tryLock()) {
                     try {
                         String currentOrder = Restaurant.serverQueue.take();
                         System.out.println("Server " + threadName + " is serving " + currentOrder);
                         ordersServed(currentOrder);
-                        Thread.sleep((long) (100 * Math.random()));
-                        System.out.println("Lock Hold Count - " + re.getHoldCount());
+                        sleep((long) (100 * Math.random()));
+//                        System.out.println("Lock Hold Count - " + re.getHoldCount());
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (NoSuchElementException e) {
@@ -59,7 +56,6 @@ public class Server extends Thread {
                 e.printStackTrace();
             }
             System.out.println(this.getOrdersServed());
-        }
     }
 
     private void ordersServed(String order) {
