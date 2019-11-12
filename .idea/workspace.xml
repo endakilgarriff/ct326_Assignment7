@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1286e845-19ea-4767-9cd9-137c3130a9c7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ct326_Assignment7/Chef.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ct326_Assignment7/Chef.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ct326_Assignment7/Restaurant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ct326_Assignment7/Restaurant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ct326_Assignment7/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ct326_Assignment7/Server.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -29,6 +27,9 @@
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Enda Kilgarriff\OneDrive - National University of Ireland, Galway\Engineering\Engineering Year3\Programming 3\Assignments\ct326_Assignment7" />
+    </key>
     <key name="CreateClassDialog.RecentsKey">
       <recent name="ct326_Assignment7" />
     </key>
@@ -90,5 +91,15 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/.." />
+    </ignored-roots>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/ct326_Assignment7$Restaurant.ic" NAME="Restaurant Coverage Results" MODIFIED="1573563398687" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ct326_Assignment7.*</FILTER>
+    </SUITE>
   </component>
 </project>
