@@ -14,16 +14,18 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Restaurant {
 
-    static ArrayBlockingQueue<String> orderQueue = new ArrayBlockingQueue<>(100, true);
-    static ArrayBlockingQueue<String> serverQueue = new ArrayBlockingQueue<>(100, true);
+    private static ArrayBlockingQueue<String> orderQueue = new ArrayBlockingQueue<>(100, true);
+    private static ArrayBlockingQueue<String> serverQueue = new ArrayBlockingQueue<>(100, true);
 
     public static void main(String[] args) {
+
+
 
         File file = new File("orderList");
         try {
             Scanner sc = new Scanner(file);
             while (sc.hasNextLine()) {
-                orderQueue.put(sc.nextLine());
+                getOrderQueue().put(sc.nextLine());
             }
             sc.close();
         } catch (FileNotFoundException | InterruptedException e) {
@@ -42,12 +44,8 @@ public class Restaurant {
         Server katie = new Server(server, "Katie", isEmpty);
         Server andrew = new Server(server, "Andrew", isEmpty);
 
-        System.out.println("*******Chefs stating to prepare orders*******");
-
         john.start();
         mark.start();
-
-        System.out.println("*******Servers stating to serve orders*******");
 
         emily.start();
         andrew.start();
@@ -55,8 +53,12 @@ public class Restaurant {
 
     }
 
-    public boolean checkNoOrders() {
-        return orderQueue.isEmpty();
+    static ArrayBlockingQueue<String> getOrderQueue() {
+        return orderQueue;
+    }
+
+    static ArrayBlockingQueue<String> getServerQueue() {
+        return serverQueue;
     }
 
 }

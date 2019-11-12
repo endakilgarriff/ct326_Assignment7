@@ -24,16 +24,16 @@ public class Chef extends Thread {
 
     @Override
     public void run() {
-        while (!Restaurant.orderQueue.isEmpty()) {
+        while (!Restaurant.getOrderQueue().isEmpty()) {
             chefLock.lock();
                 try {
-                    if(Restaurant.orderQueue.peek() != null){
-                        String currentOrder = Restaurant.orderQueue.poll();
+                    if(Restaurant.getOrderQueue().peek() != null){
+                        String currentOrder = Restaurant.getOrderQueue().poll();
                         System.out.println("Chef " + threadName +
                                 " is preparing " + currentOrder);
                         ordersPrepared(currentOrder);
                         serverLock.lock();
-                        Restaurant.serverQueue.add(currentOrder);
+                        Restaurant.getServerQueue().add(currentOrder);
                         sleep((long) (100 * Math.random()));
                         isEmpty.signalAll();
                         serverLock.unlock();
@@ -44,7 +44,7 @@ public class Chef extends Thread {
                     chefLock.unlock();
                 }
         }
-        Server.finished = true;
+        Server.setFinished();
         System.out.println(this.getOrdersPrepared());
     }
 

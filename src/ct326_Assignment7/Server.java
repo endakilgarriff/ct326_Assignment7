@@ -12,9 +12,9 @@ public class Server extends Thread {
 
     private ReentrantLock re;
     private String threadName;
-    static boolean finished = false;
+    private  static boolean finished = false;
     private int pizzaCount = 0, burgerCount = 0, fishCount = 0;
-    Condition isEmpty;
+    private Condition isEmpty;
 
     Server(ReentrantLock re, String threadName, Condition isEmpty) {
         this.re = re;
@@ -27,15 +27,15 @@ public class Server extends Thread {
             while (!finished) {
                     re.lock();
                     try {
-                        while (Restaurant.serverQueue.isEmpty() && !finished) {
+                        while (Restaurant.getServerQueue().isEmpty() && !finished) {
                             try {
                                 isEmpty.await();
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
                         }
-                        while(!Restaurant.serverQueue.isEmpty()) {
-                            String currentOrder = Restaurant.serverQueue.poll();
+                        while(!Restaurant.getServerQueue().isEmpty()) {
+                            String currentOrder = Restaurant.getServerQueue().poll();
                             System.out.println("Server " + threadName + " is serving " + currentOrder);
                             ordersServed(currentOrder);
                         }
@@ -63,6 +63,10 @@ public class Server extends Thread {
     private String getOrdersServed() {
         return "Server " + threadName + " prepared - " + pizzaCount + " Neapolitan Pizzas "
                 + burgerCount + " Cheese Burgers " + fishCount + " Fish N Chips";
+    }
+
+    static void setFinished() {
+        finished = true;
     }
 }
 
