@@ -25,7 +25,6 @@ public class Chef extends Thread {
     @Override
     public void run() {
         while (!Restaurant.orderQueue.isEmpty()) {
-//            if (chefLock.tryLock()) {
             chefLock.lock();
                 try {
                     if(Restaurant.orderQueue.peek() != null){
@@ -33,41 +32,19 @@ public class Chef extends Thread {
                         System.out.println("Chef " + threadName +
                                 " is preparing " + currentOrder);
                         ordersPrepared(currentOrder);
-//                        sleep((long) (100 * Math.random()));
                         serverLock.lock();
                         Restaurant.serverQueue.add(currentOrder);
-                    sleep((long) (100 * Math.random()));
+                        sleep((long) (100 * Math.random()));
                         isEmpty.signalAll();
                         serverLock.unlock();
                     }
-//                    System.out.println(" Chef Lock Hold Count - " + chefLock.getHoldCount());
-
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
-//					System.out.println("Chef " + threadName +
-//							" finished making order");
                     chefLock.unlock();
-//                    try {
-//                        Thread.sleep((long) (100 * Math.random()));
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
                 }
-//            } else {
-//                try {
-//                    Thread.sleep((long) (10 * Math.random()));
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
         }
         Server.finished = true;
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
         System.out.println(this.getOrdersPrepared());
     }
 

@@ -5,7 +5,6 @@
 
 package ct326_Assignment7;
 
-import java.util.NoSuchElementException;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -26,8 +25,6 @@ public class Server extends Thread {
     @Override
     public void run() {
             while (!finished) {
-//                System.out.println("Looping 1");
-//                if (re.tryLock()) {
                     re.lock();
                     try {
                         while (Restaurant.serverQueue.isEmpty() && !finished) {
@@ -41,20 +38,12 @@ public class Server extends Thread {
                             String currentOrder = Restaurant.serverQueue.poll();
                             System.out.println("Server " + threadName + " is serving " + currentOrder);
                             ordersServed(currentOrder);
-
-//                        System.out.println(" Server Lock Hold Count - " + re.getHoldCount());
                         }
 
                     } finally {
                         re.unlock();
                     }
             }
-        System.out.println("Escaped while");
-//            try {
-//                Thread.sleep(500);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
             System.out.println(this.getOrdersServed());
     }
 
