@@ -99,4 +99,9 @@
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
   </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/ct326_Assignment7$Restaurant.ic" NAME="Restaurant Coverage Results" MODIFIED="1573563398687" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ct326_Assignment7.*</FILTER>
+    </SUITE>
+  </component>
 </project>

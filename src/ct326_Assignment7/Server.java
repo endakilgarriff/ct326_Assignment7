@@ -15,46 +15,46 @@ public class Server extends Thread {
     private String threadName;
     static boolean finished = false;
     private int pizzaCount = 0, burgerCount = 0, fishCount = 0;
+    Condition isEmpty;
 
-    Server(ReentrantLock re, String threadName) {
+    Server(ReentrantLock re, String threadName, Condition isEmpty) {
         this.re = re;
         this.threadName = threadName;
+        this.isEmpty = isEmpty;
     }
 
     @Override
     public void run() {
             while (!finished) {
-                if (!Restaurant.serverQueue.isEmpty() && re.tryLock()) {
+//                System.out.println("Looping 1");
+//                if (re.tryLock()) {
+                    re.lock();
                     try {
-                        String currentOrder = Restaurant.serverQueue.take();
-                        System.out.println("Server " + threadName + " is serving " + currentOrder);
-                        ordersServed(currentOrder);
-                        sleep((long) (100 * Math.random()));
-//                        System.out.println("Lock Hold Count - " + re.getHoldCount());
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (NoSuchElementException e) {
-                        System.out.println("No orders to serve");
+                        while (Restaurant.serverQueue.isEmpty() && !finished) {
+                            try {
+                                isEmpty.await();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        while(!Restaurant.serverQueue.isEmpty()) {
+                            String currentOrder = Restaurant.serverQueue.poll();
+                            System.out.println("Server " + threadName + " is serving " + currentOrder);
+                            ordersServed(currentOrder);
+
+//                        System.out.println(" Server Lock Hold Count - " + re.getHoldCount());
+                        }
+
                     } finally {
-//					System.out.println("Server " + threadName +
-//							" served order");
                         re.unlock();
-//				System.out.println("Lock Hold Count - " +
-//						re.getHoldCount());
                     }
-                } else {
-                    try {
-                        Thread.sleep((long) (10 * Math.random()));
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
             }
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        System.out.println("Escaped while");
+//            try {
+//                Thread.sleep(500);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             System.out.println(this.getOrdersServed());
     }
 

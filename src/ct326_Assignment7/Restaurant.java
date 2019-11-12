@@ -33,12 +33,14 @@ public class Restaurant {
         ReentrantLock order = new ReentrantLock();
         ReentrantLock server = new ReentrantLock();
 
-        Chef mark = new Chef(order, server, "Mark");
-        Chef john = new Chef(order, server, "John");
+        Condition isEmpty = server.newCondition();
 
-        Server emily = new Server(server, "Emily");
-        Server katie = new Server(server, "Katie");
-        Server andrew = new Server(server, "Andrew");
+        Chef mark = new Chef(order, server, "Mark", isEmpty);
+        Chef john = new Chef(order, server, "John", isEmpty);
+
+        Server emily = new Server(server, "Emily", isEmpty);
+        Server katie = new Server(server, "Katie", isEmpty);
+        Server andrew = new Server(server, "Andrew", isEmpty);
 
         System.out.println("*******Chefs stating to prepare orders*******");
 
@@ -51,8 +53,10 @@ public class Restaurant {
         andrew.start();
         katie.start();
 
-
     }
 
+    public boolean checkNoOrders() {
+        return orderQueue.isEmpty();
+    }
 
 }
