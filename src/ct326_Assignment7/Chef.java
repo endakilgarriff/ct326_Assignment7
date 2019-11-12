@@ -24,50 +24,27 @@ public class Chef extends Thread {
 
     @Override
     public void run() {
-        while (!Restaurant.orderQueue.isEmpty()) {
-//            if (chefLock.tryLock()) {
+        while (!Restaurant.getOrderQueue().isEmpty()) {
             chefLock.lock();
                 try {
-                    if(Restaurant.orderQueue.peek() != null){
-                        String currentOrder = Restaurant.orderQueue.poll();
+                    if(Restaurant.getOrderQueue().peek() != null){
+                        String currentOrder = Restaurant.getOrderQueue().poll();
                         System.out.println("Chef " + threadName +
                                 " is preparing " + currentOrder);
                         ordersPrepared(currentOrder);
-//                        sleep((long) (100 * Math.random()));
                         serverLock.lock();
-                        Restaurant.serverQueue.add(currentOrder);
-                    sleep((long) (100 * Math.random()));
+                        Restaurant.getServerQueue().add(currentOrder);
+                        sleep((long) (100 * Math.random()));
                         isEmpty.signalAll();
                         serverLock.unlock();
                     }
-//                    System.out.println(" Chef Lock Hold Count - " + chefLock.getHoldCount());
-
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
-//					System.out.println("Chef " + threadName +
-//							" finished making order");
                     chefLock.unlock();
-//                    try {
-//                        Thread.sleep((long) (100 * Math.random()));
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
                 }
-//            } else {
-//                try {
-//                    Thread.sleep((long) (10 * Math.random()));
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
         }
-        Server.finished = true;
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        Server.setFinished();
         System.out.println(this.getOrdersPrepared());
     }
 
